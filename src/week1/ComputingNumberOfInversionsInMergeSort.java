@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 
-public class ComputingNumberOfInversions {
+public class ComputingNumberOfInversionsInMergeSort {
 
     private long numerOfInversionsMadeByMergeSort = 0;
 
@@ -79,6 +79,6 @@ public class ComputingNumberOfInversions {
     }
 
     public static void main(String[] args) {
-        new ComputingNumberOfInversions().solveProblem();
+        new ComputingNumberOfInversionsInMergeSort().solveProblem();
     }
 }
