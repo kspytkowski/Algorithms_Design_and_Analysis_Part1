@@ -10,29 +10,44 @@ import java.util.Random;
 
 public class ComputingNumberOfMinCutsInGraph {
 
-    private int mininumNumberOfMinCuts = 0;
+    private final int LOOPS_AMOUNT = 2000;
+    private int mininumMinCutsAmount = 0;
 
-    public void solveProblem() {
-        for (int i = 0; i < 2000; i++) {
-            try (BufferedReader bufferedReader = new BufferedReader(new FileReader("/home/krzysztof/workspace/Algorithms_Design_and_Analysis_Part1/src/week3/kargerMinCut.txt"))) {
-                LinkedList<Integer> vertices = new LinkedList<>();
-                LinkedList<Edge> edges = new LinkedList<>();
-                String line;
-                while ((line = bufferedReader.readLine()) != null) {
-                    String[] elementsOfLine = line.split("\t");
-                    vertices.add(Integer.parseInt(elementsOfLine[0]));
-                    for (int j = 1; j < elementsOfLine.length; j++) {
-                        if (Integer.parseInt(elementsOfLine[j]) > Integer.parseInt(elementsOfLine[0]))
-                            edges.add(new Edge(Integer.parseInt(elementsOfLine[0]), Integer.parseInt(elementsOfLine[j])));
-                    }
+    public void solveProblem() throws CloneNotSupportedException {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("/home/krzysztof/workspace/Algorithms_Design_and_Analysis_Part1/src/week3/kargerMinCut.txt"))) {
+            LinkedList<Integer> vertices = new LinkedList<>();
+            LinkedList<Edge> edges = new LinkedList<>();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] elementsOfLine = line.split("\t");
+                vertices.add(Integer.parseInt(elementsOfLine[0]));
+                for (int j = 1; j < elementsOfLine.length; j++) {
+                    if (Integer.parseInt(elementsOfLine[j]) > Integer.parseInt(elementsOfLine[0]))
+                        edges.add(new Edge(Integer.parseInt(elementsOfLine[0]), Integer.parseInt(elementsOfLine[j])));
                 }
-                Random rand = new Random();
-                while (vertices.size() != 2) {
-                    int randNumber = rand.nextInt(edges.size());
-                    Edge randEdge = edges.get(randNumber);
-                    edges.remove(randNumber);
-                    vertices.remove((Integer) randEdge.getFirstVertex());
-                    Iterator<Edge> iter = edges.iterator();
+            }
+
+            LinkedList<Integer> verticesTemp = new LinkedList<>();
+            LinkedList<Edge> edgesTemp = new LinkedList<>();
+            Random rand = new Random();
+            
+            for (int i = 0; i < LOOPS_AMOUNT; i++) {
+                verticesTemp.clear();
+                Iterator<Integer> iter1 = vertices.iterator();
+                while (iter1.hasNext()) {
+                    verticesTemp.add(new Integer(iter1.next()));
+                }
+                edgesTemp.clear();
+                Iterator<Edge> iter2 = edges.iterator();
+                while (iter2.hasNext()) {
+                    edgesTemp.add((Edge) iter2.next().clone());
+                }
+                while (verticesTemp.size() != 2) {
+                    int randNumber = rand.nextInt(edgesTemp.size());
+                    Edge randEdge = edgesTemp.get(randNumber);
+                    edgesTemp.remove(randNumber);
+                    verticesTemp.remove((Integer) randEdge.getFirstVertex());
+                    Iterator<Edge> iter = edgesTemp.iterator();
                     while (iter.hasNext()) {
                         Edge e = iter.next();
                         if (randEdge.getFirstVertex() == e.getFirstVertex()) {
@@ -46,20 +61,25 @@ public class ComputingNumberOfMinCutsInGraph {
                         }
                     }
                 }
-                if (mininumNumberOfMinCuts == 0 || mininumNumberOfMinCuts > edges.size())
-                    mininumNumberOfMinCuts = edges.size();
-            } catch (FileNotFoundException e) {
-                System.out.println("There in no such file");
-                e.printStackTrace();
-            } catch (IOException e) {
-                System.out.println("For some reason cannot read from file");
-                e.printStackTrace();
+                if (mininumMinCutsAmount == 0 || mininumMinCutsAmount > edgesTemp.size())
+                    mininumMinCutsAmount = edgesTemp.size();
             }
+            System.out.println(mininumMinCutsAmount);
+        } catch (FileNotFoundException e) {
+            System.out.println("There in no such file");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("For some reason cannot read from file");
+            e.printStackTrace();
         }
-        System.out.println(mininumNumberOfMinCuts);
     }
 
     public static void main(String[] args) {
-        new ComputingNumberOfMinCutsInGraph().solveProblem();
+        try {
+            new ComputingNumberOfMinCutsInGraph().solveProblem();
+        } catch (CloneNotSupportedException e) {
+            System.out.println("There are some problems with cloning objects");
+            e.printStackTrace();
+        }
     }
 }

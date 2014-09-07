@@ -33,9 +33,9 @@ public class ComputingStronglyConnectedComponentsInGraph {
         end[edge] = time;
     }
 
-    private int findMaxVertexNumber() {
+    private int findMaxVertexNumber(String filename) {
         int maxVertexNumber = -1;
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("/home/krzysztof/workspace/Algorithms_Design_and_Analysis_Part1/src/week4/SCC.txt"))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filename))) {
             String line;
             int firstVertexNumber = 0;
             int secondVertexNumber = 0;
@@ -60,8 +60,8 @@ public class ComputingStronglyConnectedComponentsInGraph {
         return maxVertexNumber;
     }
 
-    private void fillGraphsWithEdges(DirectedGraph directedGraph, DirectedGraph transposedDirectedGraph) {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("/home/krzysztof/workspace/Algorithms_Design_and_Analysis_Part1/src/week4/SCC.txt"))) {
+    private void fillGraphsWithEdges(String filename, DirectedGraph directedGraph, DirectedGraph transposedDirectedGraph) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filename))) {
             String line;
             int firstVertexNumber = 0;
             int secondVertexNumber = 0;
@@ -82,7 +82,8 @@ public class ComputingStronglyConnectedComponentsInGraph {
     }
 
     public void solveProblem() {
-        int maxVertexNumber = findMaxVertexNumber();
+        String filename = "/home/krzysztof/workspace/Algorithms_Design_and_Analysis_Part1/src/week4/SCC.txt";
+        int maxVertexNumber = findMaxVertexNumber(filename);
         DirectedGraph directedGraph = new DirectedGraph(maxVertexNumber + 1);
         DirectedGraph transposedDirectedGraph = new DirectedGraph(maxVertexNumber + 1);
         boolean[] explored = new boolean[maxVertexNumber + 1];
@@ -90,22 +91,19 @@ public class ComputingStronglyConnectedComponentsInGraph {
         int[] begin = new int[maxVertexNumber + 1];
         int[] end = new int[maxVertexNumber + 1];
         List<VertexTime> times = new ArrayList<VertexTime>(maxVertexNumber + 1);
-        fillGraphsWithEdges(directedGraph, transposedDirectedGraph);
+        fillGraphsWithEdges(filename, directedGraph, transposedDirectedGraph);
 
         for (int i = 0; i < maxVertexNumber + 1; i++) {
             if (explored[i] == false) {
                 DepthFirstSearch(directedGraph, i, explored, begin, end);
             }
         }
-
         for (int i = 0; i < maxVertexNumber + 1; i++) {
             times.add(new VertexTime(i, end[i]));
         }
-
         Collections.sort(times);
-
-        List<Integer> finalTimesList = new LinkedList<Integer>();
         time = 0;
+        List<Integer> finalTimesList = new LinkedList<Integer>();
         Iterator<VertexTime> iter = times.iterator();
         int i;
         while (iter.hasNext()) {
@@ -116,17 +114,13 @@ public class ComputingStronglyConnectedComponentsInGraph {
             finalTimesList.add(time);
             time = 0;
         }
-
         Collections.sort(finalTimesList);
-        
         for(i = 0; i < 5; i++) {
             sizesOfFiveLargestSCCs[i] = finalTimesList.get(finalTimesList.size() - i - 1) / 2;
         }
-        
         for(i = 0; i < 5; i++) {
             System.out.println(sizesOfFiveLargestSCCs[i]);
         }
-
     }
 
     public static void main(String[] args) {

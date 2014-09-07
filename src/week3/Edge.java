@@ -1,6 +1,6 @@
 package week3;
 
-public class Edge {
+public class Edge implements Cloneable {
 
     private int first; // first vertex of edge
     private int second; // second vertex of edge
@@ -34,6 +34,11 @@ public class Edge {
     
     public String toString() {
         return "[" + first + ", " + second + "]";
+    }
+    
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return (Edge)super.clone();
     }
 
 }

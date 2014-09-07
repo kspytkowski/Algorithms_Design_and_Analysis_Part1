@@ -12,7 +12,7 @@ public class ComputingNumerOfComparisionsInQuickSort {
         BEGINNING, MEDIAN, ENDING
     }
 
-    private long numberOfComparisionsMadeByQuickSort = 0;
+    private long numberOfComparisions;
 
     private int choosePivot(LinkedList<Integer> array, int beginIndex, int endIndex, PivotType pivotType) {
         int pivotIndex = 0;
@@ -41,7 +41,7 @@ public class ComputingNumerOfComparisionsInQuickSort {
     }
 
     private int makePartition(LinkedList<Integer> array, int beginIndex, int endIndex) {
-        numberOfComparisionsMadeByQuickSort += endIndex - beginIndex;
+        numberOfComparisions += endIndex - beginIndex;
         int pivot = array.get(beginIndex);
         int i = beginIndex + 1;
         for (int j = beginIndex + 1; j <= endIndex; j++) {
@@ -75,19 +75,22 @@ public class ComputingNumerOfComparisionsInQuickSort {
                 int numberInt = Integer.parseInt(numberString);
                 array1.addLast(numberInt);
             }
+            @SuppressWarnings("unchecked")
             LinkedList<Integer> array2 = (LinkedList<Integer>) array1.clone();
+            @SuppressWarnings("unchecked")
             LinkedList<Integer> array3 = (LinkedList<Integer>) array1.clone();
 
+            numberOfComparisions = 0;
             quickSort(array1, 0, array1.size() - 1, PivotType.BEGINNING);
-            System.out.println(numberOfComparisionsMadeByQuickSort);
+            System.out.println(numberOfComparisions);
 
-            numberOfComparisionsMadeByQuickSort = 0;
+            numberOfComparisions = 0;
             quickSort(array2, 0, array1.size() - 1, PivotType.MEDIAN);
-            System.out.println(numberOfComparisionsMadeByQuickSort);
+            System.out.println(numberOfComparisions);
 
-            numberOfComparisionsMadeByQuickSort = 0;
+            numberOfComparisions = 0;
             quickSort(array3, 0, array1.size() - 1, PivotType.ENDING);
-            System.out.println(numberOfComparisionsMadeByQuickSort);
+            System.out.println(numberOfComparisions);
 
         } catch (FileNotFoundException e) {
             System.out.println("There in no such file");

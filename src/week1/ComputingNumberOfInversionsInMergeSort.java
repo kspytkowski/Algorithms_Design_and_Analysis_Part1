@@ -8,7 +8,7 @@ import java.util.LinkedList;
 
 public class ComputingNumberOfInversionsInMergeSort {
 
-    private long numerOfInversionsMadeByMergeSort = 0;
+    private long inversionsAmount;
 
     private LinkedList<Integer> merge(LinkedList<Integer> left, LinkedList<Integer> right) {
         LinkedList<Integer> output = new LinkedList<>();
@@ -18,7 +18,7 @@ public class ComputingNumberOfInversionsInMergeSort {
                 output.addLast(left.get(i));
                 i++;
             } else {
-                numerOfInversionsMadeByMergeSort += left.size() - i;
+                inversionsAmount += left.size() - i;
                 output.addLast(right.get(j));
                 j++;
             }
@@ -59,7 +59,7 @@ public class ComputingNumberOfInversionsInMergeSort {
         }
     }
 
-    private void solveProblem() {
+    public void solveProblem() {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("/home/krzysztof/workspace/Algorithms_Design_and_Analysis_Part1/src/week1/IntegerArray.txt"))) {
             LinkedList<Integer> array = new LinkedList<>();
             String numberString;
@@ -67,8 +67,9 @@ public class ComputingNumberOfInversionsInMergeSort {
                 int numberInt = Integer.parseInt(numberString);
                 array.addLast(numberInt);
             }
-            LinkedList<Integer> result = mergeSort(array);
-            System.out.println(numerOfInversionsMadeByMergeSort);
+            inversionsAmount = 0;
+            mergeSort(array);
+            System.out.println(inversionsAmount);
         } catch (FileNotFoundException e) {
             System.out.println("There in no such file");
             e.printStackTrace();

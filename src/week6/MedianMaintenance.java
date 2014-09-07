@@ -76,6 +76,7 @@ public class MedianMaintenance {
                     }
                 }
             }
+            System.out.println(sumOf10000Medians % 10000);
         } catch (FileNotFoundException e) {
             System.out.println("There in no such file");
             e.printStackTrace();
@@ -83,7 +84,6 @@ public class MedianMaintenance {
             System.out.println("For some reason cannot read from file");
             e.printStackTrace();
         }
-        System.out.println(sumOf10000Medians % 10000);
     }
 
     public static void main(String[] args) {

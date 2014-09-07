@@ -11,11 +11,14 @@ import java.util.Queue;
 
 public class DijkstraShortestPath {
 
+    private int INFINITY = 1000000;
+    private int SOURCE_VERTEX = 1;
+    
     private int[] dijkstra(Graph graph, int vertexIndex) {
         int[] d = new int[graph.getVertexAmount()];
         d[vertexIndex] = 0;
         for (int v = 1; v < graph.getVertexAmount(); v++) {
-            d[v] = 1000000;
+            d[v] = INFINITY;
         }
         Queue<Pair> priorityQueue = new PriorityQueue<Pair>(1);
         for (int i = 0; i < graph.getAdjacencyList(vertexIndex).size(); i++) {
@@ -36,8 +39,8 @@ public class DijkstraShortestPath {
         return d;
     }
     
-    private void fillGraphWithEdges(Graph graph) {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("/home/krzysztof/workspace/Algorithms_Design_and_Analysis_Part1/src/week5/dijkstraData.txt"))) {
+    private void fillGraphWithEdges(String filename, Graph graph) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] elementsOfLine = line.split("\t");
@@ -55,10 +58,11 @@ public class DijkstraShortestPath {
     }
 
     private void solveProblem() {
-        String vertexNumber = LastLineInFile.find(new File("/home/krzysztof/workspace/Algorithms_Design_and_Analysis_Part1/src/week5/dijkstraData.txt"));
+        String filename = "/home/krzysztof/workspace/Algorithms_Design_and_Analysis_Part1/src/week5/dijkstraData.txt";
+        String vertexNumber = LastLineInFile.find(new File(filename));
         Graph graph = new Graph(Integer.parseInt(vertexNumber.split("\t")[0]) + 1);
-        fillGraphWithEdges(graph);
-        int[] shortestPaths = dijkstra(graph, 1);
+        fillGraphWithEdges(filename, graph);
+        int[] shortestPaths = dijkstra(graph, SOURCE_VERTEX);
         System.out.println(shortestPaths[7] + "," + shortestPaths[37] + "," + shortestPaths[59] + "," + shortestPaths[82] + "," + shortestPaths[99] + "," + shortestPaths[115] + "," + shortestPaths[133] + "," + shortestPaths[165] + "," + shortestPaths[188] + "," + shortestPaths[197]);
     }
 
